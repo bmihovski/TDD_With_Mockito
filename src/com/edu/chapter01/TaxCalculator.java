@@ -1,11 +1,14 @@
 package com.edu.chapter01;
 
 public class TaxCalculator {
-	
-	double payableTax = TaxCalculator.calculate(400000.00);
 
-	static double calculate(double d) {
-		return 400000.00;
+	public double calculate(double taxableIncome) {
+		
+		if (taxableIncome > 500_000.00) {
+			return 50_000 + ((taxableIncome - 500_000) / 5);
+		}
+		
+		return taxableIncome / 10;
 	}
 
 }
