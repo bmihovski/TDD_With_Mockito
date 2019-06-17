@@ -1,8 +1,10 @@
 package com.edu.chapter02;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class OnceYouBuyYouStartCryingTelephone {
 	public static final int TWO_G = 2;
@@ -24,35 +26,37 @@ public class OnceYouBuyYouStartCryingTelephone {
 	 * legal consumer forum issue? For 4G- we don't have 4th generation spectrum. we
 	 * will provide 3G with a wrapper of 4G
 	 * 
-	 * @param a
-	 * @param s
-	 * @param b
-	 * @param c
+	 * @param firstName
+	 * @param prefix
+	 * @param middleName
+	 * @param lastName
 	 * @param z
 	 * @param gen
 	 * @return
 	 **/
-	public String add(String a, String s, String b, String c, Date z, int gen) {
-		if (a == null || c == null || z == null)
+	public String addConnection(String firstName, String prefix, String middleName, String lastName, Date z, int gen) {
+		if (firstName == null || lastName == null || z == null)
 			throw new RuntimeException();
 		String r = "";
-		if (s != null) {
-			r = r + " " + s;
-			if (a != null)
-				r = r + " " + a;
-			if (b != null)
-				r = r + " " + b;
-			if (c != null)
-				r = r + c;
+		if (prefix != null) {
+			r = r + " " + prefix;
+			if (firstName != null)
+				r = r + " " + firstName;
+			if (middleName != null)
+				r = r + " " + middleName;
+			if (lastName != null)
+				r = r + lastName;
 		} else {
-			if (a != null)
-				r = r + " " + a;
-			if (b != null)
-				r = r + " " + b;
-			if (c != null)
-				r = r + c;
+			if (firstName != null)
+				r = r + " " + firstName;
+			if (middleName != null)
+				r = r + " " + middleName;
+			if (lastName != null)
+				r = r + lastName;
 		}
-		String n = Number.next();
+		byte[] array = new byte[7]; // length is bounded by 7
+	    new Random().nextBytes(array);
+	    String n = new String(array, Charset.forName("UTF-8"));
 		names.put(n, r);
 		cd.put(n, z);
 		if (gen == TWO_G) {
