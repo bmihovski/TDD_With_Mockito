@@ -8,42 +8,46 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.edu.chapter02.PhoneConnection.ConnectionType;
+
 public class OnceYouBuyYouStartCryingTelephoneTest {
 	
 	OnceYouBuyYouStartCryingTelephone telephone = new OnceYouBuyYouStartCryingTelephone();
 	
 	@Test(expected = RuntimeException.class)
 	public void when_input_first_name_is_null_then_throws_exception() throws Exception {
-		telephone.addConnection(null, null, null, null, null, 0);
+		telephone.addConnection(null, null, null, null, null, null);
 		
 		fail("Code should not reach here!");
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void when_input_last_name_is_null_then_throws_exception() throws Exception {
-		telephone.addConnection("ivan", null, null, null, null, 0);
+		telephone.addConnection("ivan", null, null, null, null, null);
 		
 		fail("code should not reach here");
 	}
 	
 	@Test(expected = RuntimeException.class)
 	public void when_input_z_is_null_then_throws_exception() throws Exception {
-		telephone.addConnection("gee", null, null, "ned", null, 0);
+		telephone.addConnection("gee", null, null, "ned", null, null);
 		
 		fail("code should not reach here");
 	}
 	
 	@Test(expected = RuntimeException.class)
 	public void when_input_gen_is_invalid_then_throws_exception() throws Exception {
-		telephone.addConnection("isew", null, null, "ens", new Date(), 0);
+		telephone.addConnection("isew", null, null, "ens", new Date(), null);
 		
 		fail("code should not reach here");
 	}
 	
+	@Test
 	public void when_valid_input_then_adds_input() throws Exception {
-		assertNotNull(telephone.addConnection("esd", null, null, "eswq", new Date(), OnceYouBuyYouStartCryingTelephone.THREE_G));
+		assertNotNull(telephone.addConnection("esd", null, null, "eswq", new Date(), ConnectionType.THREE_G));
 	}
 	
+	@Test
 	public void when_all_name_atributes_are_passed_then_forms_the_name() throws Exception {
 		
 		String johnsFirstName = "john";
@@ -52,7 +56,7 @@ public class OnceYouBuyYouStartCryingTelephoneTest {
 		String johnsNamePrefix = "dr.";
 		
 		String number = telephone.addConnection(johnsFirstName, johnsNamePrefix,
-					johnsLastName, johnsSecondName, new Date(), OnceYouBuyYouStartCryingTelephone.THREE_G);
+					johnsLastName, johnsSecondName, new Date(), ConnectionType.FOUR_G);
 		
 		assertNotNull(number);
 		

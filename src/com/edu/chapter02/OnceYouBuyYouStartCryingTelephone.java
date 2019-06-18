@@ -6,13 +6,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import com.edu.chapter02.PhoneConnection.ConnectionType;
+
 public class OnceYouBuyYouStartCryingTelephone {
-	public static final int TWO_G = 2;
-	public static final int THREE_G = 3;
-	public static final int FOUR_G = 4;
-	private Map<String, String> names = new HashMap<String, String>();
 	private Map<String, Integer> types = new HashMap<String, Integer>();
 	private Map<String, Date> cd = new HashMap<String, Date>();
+	private Map<ConnectionType, PhoneConnection> connectionForATypeMap =
+			new HashMap<ConnectionType, PhoneConnection>();
+	private Map<String, ConnectionType> connectionTypeForNumberMap = 
+			new HashMap<String, ConnectionType>();
+	
+	public OnceYouBuyYouStartCryingTelephone() {
+		initialize();
+	}
+
+	private void initialize() {
+		connectionForATypeMap.put(ConnectionType.TWO_G, new TwoGConnection());
+		connectionForATypeMap.put(ConnectionType.THREE_G, new ThreeGConnection());
+		connectionForATypeMap.put(ConnectionType.FOUR_G, new FourGConnection());
+	}
 
 	/**
 	 * This method activates a connection for a customer and stores different
@@ -34,49 +46,38 @@ public class OnceYouBuyYouStartCryingTelephone {
 	 * @param gen
 	 * @return
 	 **/
-	public String addConnection(String firstName, String prefix, String middleName, String lastName, Date z, int gen) {
+	public String addConnection(String firstName, String prefix, String middleName, String lastName, Date z, ConnectionType connectionType) {
 		if (firstName == null || lastName == null || z == null)
 			throw new RuntimeException();
-		String r = "";
+		String personName = "";
 		if (prefix != null) {
-			r = r + " " + prefix;
+			personName = personName + " " + prefix;
 			if (firstName != null)
-				r = r + " " + firstName;
+				personName = personName + " " + firstName;
 			if (middleName != null)
-				r = r + " " + middleName;
+				personName = personName + " " + middleName;
 			if (lastName != null)
-				r = r + lastName;
+				personName = personName + lastName;
 		} else {
 			if (firstName != null)
-				r = r + " " + firstName;
+				personName = personName + " " + firstName;
 			if (middleName != null)
-				r = r + " " + middleName;
+				personName = personName + " " + middleName;
 			if (lastName != null)
-				r = r + lastName;
+				personName = personName + lastName;
 		}
 		byte[] array = new byte[7]; // length is bounded by 7
 	    new Random().nextBytes(array);
-	    String n = new String(array, Charset.forName("UTF-8"));
-		names.put(n, r);
-		cd.put(n, z);
-		if (gen == TWO_G) {
-			activate2GCon(n);
-			types.put(n, TWO_G);
-		} else if (gen == THREE_G) {
-			activate2GCon(n);
-			types.put(n, THREE_G);
-		} else if (gen == FOUR_G) {
-			activate2GCon(n);
-			types.put(n, FOUR_G);
-		} else {
-			throw new IllegalStateException();
+	    String number = new String(array, Charset.forName("UTF-8"));
+	    connectionTypeForNumberMap.put(number, connectionType);
+		cd.put(number, z);
+		PhoneConnection connection =
+				connectionForATypeMap.get(connectionType);
+		if (connection == null) {
+		throw new IllegalStateException();
 		}
-		return n;
-	}
-
-	private void activate2GCon(String n) {
-		// TODO Auto-generated method stub
-		
+		connection.activate(personName, number);
+		return number;
 	}
 
 	/**
@@ -85,37 +86,16 @@ public class OnceYouBuyYouStartCryingTelephone {
 	 * @param n
 	 * @return
 	 **/
-	public String bill(String n) {
-		Integer gen = types.get(n);
-		if (gen == null) {
+	public String bill(String number) {
+		ConnectionType connectionType = connectionTypeForNumberMap.get(number);
+		if (connectionType == null) {
 			throw new RuntimeException();
 		}
-		switch (gen.intValue()) {
-		case TWO_G:
-			return gen2GBill(n);
-		case THREE_G:
-			return gen3GBill(n);
-		case FOUR_G:
-			return gen4GBill(n);
-		default:
-			break;
-		}
-		return "";
-	}
-
-	private String gen4GBill(String n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String gen3GBill(String n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String gen2GBill(String n) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		PhoneConnection connection =
+				connectionForATypeMap.get(connectionType); 
+		
+		return connection.generateBillFor(number);
 	}
 
 	public void chargeIncomingSms(String num) {
