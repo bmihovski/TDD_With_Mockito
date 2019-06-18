@@ -11,11 +11,9 @@ import com.edu.chapter02.PhoneConnection.ConnectionType;
 public class OnceYouBuyYouStartCryingTelephone {
 	private Map<String, Integer> types = new HashMap<String, Integer>();
 	private Map<String, Date> cd = new HashMap<String, Date>();
-	private Map<ConnectionType, PhoneConnection> connectionForATypeMap =
-			new HashMap<ConnectionType, PhoneConnection>();
-	private Map<String, ConnectionType> connectionTypeForNumberMap = 
-			new HashMap<String, ConnectionType>();
-	
+	private Map<ConnectionType, PhoneConnection> connectionForATypeMap = new HashMap<ConnectionType, PhoneConnection>();
+	private Map<String, ConnectionType> connectionTypeForNumberMap = new HashMap<String, ConnectionType>();
+
 	public OnceYouBuyYouStartCryingTelephone() {
 		initialize();
 	}
@@ -46,38 +44,45 @@ public class OnceYouBuyYouStartCryingTelephone {
 	 * @param gen
 	 * @return
 	 **/
-	public String addConnection(String firstName, String prefix, String middleName, String lastName, Date z, ConnectionType connectionType) {
+	public String addConnection(String firstName, String prefix, String middleName, String lastName, Date z,
+			ConnectionType connectionType) {
 		if (firstName == null || lastName == null || z == null)
 			throw new RuntimeException();
-		String personName = "";
+		
+		StringBuilder personName = new StringBuilder();
 		if (prefix != null) {
-			personName = personName + " " + prefix;
-			if (firstName != null)
-				personName = personName + " " + firstName;
-			if (middleName != null)
-				personName = personName + " " + middleName;
-			if (lastName != null)
-				personName = personName + lastName;
-		} else {
-			if (firstName != null)
-				personName = personName + " " + firstName;
-			if (middleName != null)
-				personName = personName + " " + middleName;
-			if (lastName != null)
-				personName = personName + lastName;
+			personName.append(prefix).append(" ");
 		}
+		
+		personName.append(
+				buildName(firstName, prefix, middleName, lastName));
+		
 		byte[] array = new byte[7]; // length is bounded by 7
-	    new Random().nextBytes(array);
-	    String number = new String(array, Charset.forName("UTF-8"));
-	    connectionTypeForNumberMap.put(number, connectionType);
+		new Random().nextBytes(array);
+		String number = new String(array, Charset.forName("UTF-8"));
+		connectionTypeForNumberMap.put(number, connectionType);
 		cd.put(number, z);
-		PhoneConnection connection =
-				connectionForATypeMap.get(connectionType);
+		PhoneConnection connection = connectionForATypeMap.get(connectionType);
 		if (connection == null) {
-		throw new IllegalStateException();
+			throw new IllegalStateException();
 		}
 		connection.activate(personName, number);
 		return number;
+	}
+
+	protected String buildName(String firstName, String prefix, String middleName, String lastName) {
+		StringBuilder personName = new StringBuilder();
+		if (firstName != null) {
+			personName.append(firstName).append(" ");
+		}
+
+		if (middleName != null) {
+			personName.append(middleName).append(" ");
+		}
+		if (lastName != null) {
+			personName.append(lastName);
+		}
+		return personName.toString();
 	}
 
 	/**
@@ -91,10 +96,9 @@ public class OnceYouBuyYouStartCryingTelephone {
 		if (connectionType == null) {
 			throw new RuntimeException();
 		}
-		
-		PhoneConnection connection =
-				connectionForATypeMap.get(connectionType); 
-		
+
+		PhoneConnection connection = connectionForATypeMap.get(connectionType);
+
 		return connection.generateBillFor(number);
 	}
 
