@@ -5,6 +5,9 @@ public class PersonName {
 	private String prefix;
 	private String middleName;
 	private String lastName;
+	private static final String SPACE = " ";
+	
+	public PersonName() {}
 
 	public PersonName(String firstName, String prefix, String middleName, String lastName) {
 		this.firstName = firstName;
@@ -43,6 +46,25 @@ public class PersonName {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	protected String buildName(PersonName name) {
+		StringBuilder personName = new StringBuilder();
+		if (name.getFirstName() != null) {
+			personName.append(name.getFirstName()).append(SPACE);
+		}
+
+		if (name.getPrefix() != null) {
+			personName.append(name.getPrefix()).append(SPACE);
+		}
+		
+		if (name.getMiddleName() != null) {
+			personName.append(name.getMiddleName()).append(SPACE);
+		}
+		if (name.getLastName() != null) {
+			personName.append(name.getLastName());
+		}
+		return personName.toString();
 	}
 
 }

@@ -14,7 +14,7 @@ public class FourGConnection extends ClientNameAndNumber implements PhoneConnect
 	@Override
 	public String generateBillFor(String number) {
 		final PersonName person = numberAndNameMap.get(number);
-		return "4G bill for " + person.getFirstName() + " " + person.getLastName() + " " + person.getMiddleName() + " " + person.getPrefix();
+		return "4G bill for " + new PersonName().buildName(person);
 	} 
 
 }

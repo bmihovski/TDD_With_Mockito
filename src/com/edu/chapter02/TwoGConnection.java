@@ -14,7 +14,7 @@ public class TwoGConnection extends ClientNameAndNumber implements PhoneConnecti
 	@Override
 	public String generateBillFor(String number) {
 		final PersonName person = numberAndNameMap.get(number);
-		return "2G bill for " + person.getFirstName() + " " + person.getLastName() + " " + person.getMiddleName() + " " + person.getPrefix();
+		return "2G bill for " + new PersonName().buildName(person);
 	} 
 
 }

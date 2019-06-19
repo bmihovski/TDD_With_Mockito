@@ -55,16 +55,32 @@ public class OnceYouBuyYouStartCryingTelephoneTest {
 		String johnsLastName = "maddison";
 		String johnsNamePrefix = "dr.";
 		
-		String number = telephone.addConnection(new PersonName(johnsFirstName, johnsNamePrefix, johnsLastName, johnsSecondName), new Date(),
+		String number4G = telephone.addConnection(new PersonName(johnsFirstName, johnsNamePrefix, johnsLastName, johnsSecondName), new Date(),
 					ConnectionType.FOUR_G);
 		
-		assertNotNull(number);
+		assertNotNull(number4G);
 		
-		String billDetails = telephone.bill(number);
-		assertTrue(billDetails.contains(johnsFirstName));
-		assertTrue(billDetails.contains(johnsNamePrefix));
-		assertTrue(billDetails.contains(johnsLastName));
-		assertTrue(billDetails.contains(johnsSecondName));
+		String bill4GDetails = telephone.bill(number4G);
+		assertTrue(bill4GDetails.contains(johnsFirstName));
+		assertTrue(bill4GDetails.contains(johnsNamePrefix));
+		assertTrue(bill4GDetails.contains(johnsLastName));
+		assertTrue(bill4GDetails.contains(johnsSecondName));
+		
+		String kenFirstName = "ken";
+		String kenSecondName = "eres";
+		String kenLastName = "maee";
+		String kenNamePrefix = "me.";
+		
+		String number3G = telephone.addConnection(new PersonName(kenFirstName, kenNamePrefix, kenLastName, kenSecondName), new Date(),
+					ConnectionType.FOUR_G);
+		
+		assertNotNull(number3G);
+		
+		String bill3GDetails = telephone.bill(number3G);
+		assertTrue(bill3GDetails.contains(kenFirstName));
+		assertTrue(bill3GDetails.contains(kenNamePrefix));
+		assertTrue(bill3GDetails.contains(kenLastName));
+		assertTrue(bill3GDetails.contains(kenSecondName));
 	}
 	
 }
