@@ -16,35 +16,35 @@ public class OnceYouBuyYouStartCryingTelephoneTest {
 	
 	@Test(expected = RuntimeException.class)
 	public void when_input_first_name_is_null_then_throws_exception() throws Exception {
-		telephone.addConnection(null, null, null, null, null, null);
+		telephone.addConnection(new PersonName(null, null, null, null), null, null);
 		
 		fail("Code should not reach here!");
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void when_input_last_name_is_null_then_throws_exception() throws Exception {
-		telephone.addConnection("ivan", null, null, null, null, null);
+		telephone.addConnection(new PersonName("ivan", null, null, null), null, null);
 		
 		fail("code should not reach here");
 	}
 	
 	@Test(expected = RuntimeException.class)
 	public void when_input_z_is_null_then_throws_exception() throws Exception {
-		telephone.addConnection("gee", null, null, "ned", null, null);
+		telephone.addConnection(new PersonName("gee", null, null, "ned"), null, null);
 		
 		fail("code should not reach here");
 	}
 	
 	@Test(expected = RuntimeException.class)
 	public void when_input_gen_is_invalid_then_throws_exception() throws Exception {
-		telephone.addConnection("isew", null, null, "ens", new Date(), null);
+		telephone.addConnection(new PersonName("isew", null, null, "ens"), new Date(), null);
 		
 		fail("code should not reach here");
 	}
 	
 	@Test
 	public void when_valid_input_then_adds_input() throws Exception {
-		assertNotNull(telephone.addConnection("esd", null, null, "eswq", new Date(), ConnectionType.THREE_G));
+		assertNotNull(telephone.addConnection(new PersonName("esd", null, null, "eswq"), new Date(), ConnectionType.THREE_G));
 	}
 	
 	@Test
@@ -55,8 +55,8 @@ public class OnceYouBuyYouStartCryingTelephoneTest {
 		String johnsLastName = "maddison";
 		String johnsNamePrefix = "dr.";
 		
-		String number = telephone.addConnection(johnsFirstName, johnsNamePrefix,
-					johnsLastName, johnsSecondName, new Date(), ConnectionType.FOUR_G);
+		String number = telephone.addConnection(new PersonName(johnsFirstName, johnsNamePrefix, johnsLastName, johnsSecondName), new Date(),
+					ConnectionType.FOUR_G);
 		
 		assertNotNull(number);
 		

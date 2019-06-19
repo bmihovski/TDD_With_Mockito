@@ -1,22 +1,20 @@
 package com.edu.chapter02;
 
-import java.util.HashMap;
-import java.util.Map;
 
-public class ThreeGConnection implements PhoneConnection {
 
-	private Map<String, String> numberAndNameMap = new HashMap<String, String>();
+public class ThreeGConnection extends ClientNameAndNumber implements PhoneConnection {
 
 	@Override
-	public boolean activate(String connectionForUserName, String number) {
-		System.out.println("activationg 3G foruser=" + connectionForUserName + "and number=" + number);
+	public boolean activate(PersonName connectionForUserName, String number) {
+		System.out.println("activationg 3G foruser= " + connectionForUserName.getFirstName() + " and number= " + number);
 		numberAndNameMap.put(number, connectionForUserName);
 		return true;
 	}
 
 	@Override
 	public String generateBillFor(String number) {
-		return "3G bill for "+numberAndNameMap.get(number);
+		final PersonName person = numberAndNameMap.get(number);
+		return "3G bill for " + person.getFirstName() + " " + person.getLastName() + " " + person.getMiddleName() + " " + person.getPrefix();
 	}
 
 }
