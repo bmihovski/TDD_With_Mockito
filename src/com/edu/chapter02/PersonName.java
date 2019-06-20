@@ -48,7 +48,7 @@ public class PersonName {
 		this.lastName = lastName;
 	}
 	
-	protected String buildName(PersonName name) {
+	protected String getFormattedName(PersonName name) {
 		StringBuilder personName = new StringBuilder();
 		if (name.getFirstName() != null) {
 			personName.append(name.getFirstName()).append(SPACE);

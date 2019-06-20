@@ -14,7 +14,7 @@ public class ThreeGConnection extends ClientNameAndNumber implements PhoneConnec
 	@Override
 	public String generateBillFor(String number) {
 		final PersonName person = numberAndNameMap.get(number);
-		return "3G bill for " + new PersonName().buildName(person);
+		return "3G bill for " + new PersonName().getFormattedName(person);
 	}
 
 }
