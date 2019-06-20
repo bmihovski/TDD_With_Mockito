@@ -1,7 +1,7 @@
 package com.edu.chapter04.ouside.in;
 
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 
@@ -10,13 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaxConsultantTest {
 	
 	@Mock
 	TaxbleIncomeCalculator taxbleIncomeCalculator;
+	@Mock
 	TaxCalculator taxCalculator;
 
 	TaxConsultant consultant;
