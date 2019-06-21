@@ -3,10 +3,15 @@ package com.edu.chapter06;
 import java.util.List;
 
 public class BiggestBazarRetail {
-	
-	public BiggestBazarRetail(Inventory inventory, PublicAddressSystem publicAddressSystem) {}
+	Inventory inventory;
+	PublicAddressSystem publicAddressSystem;
+	public BiggestBazarRetail(Inventory inventory, PublicAddressSystem publicAddressSystem) {
+		this.inventory = inventory;
+		this.publicAddressSystem = publicAddressSystem;		
+	}
 
 	public int issueDiscountForItemsExpireIn30Days(double discountRate) {
+
 
 		List<Item> headingExpiryItems = inventory.getItemsExpireInAMonth();
 		for (Item anItem : headingExpiryItems) {
