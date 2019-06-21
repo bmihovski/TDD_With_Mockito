@@ -1,4 +1,4 @@
-package com.edu.chapter04.ouside.in;
+package com.edu.chapter04.outside.in;
 
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
@@ -11,6 +11,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import come.edu.chapter04.outside.in.TaxCalculator;
+import come.edu.chapter04.outside.in.TaxConsultant;
+import come.edu.chapter04.outside.in.TaxbleIncomeCalculator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaxConsultantTest {

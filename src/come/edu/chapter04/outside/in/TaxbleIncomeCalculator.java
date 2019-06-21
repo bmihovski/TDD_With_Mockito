@@ -1,4 +1,4 @@
-package com.edu.chapter04.ouside.in;
+package come.edu.chapter04.outside.in;
 
 public interface TaxbleIncomeCalculator {
 	
