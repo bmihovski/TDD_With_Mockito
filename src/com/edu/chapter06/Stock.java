@@ -1,11 +1,11 @@
 package com.edu.chapter06;
 
-public class StockT {
+public class Stock {
 
 	private String id;
 	private double lastValue;
 
-	public StockT(String id, double lastValue) {
+	public Stock(String id, double lastValue) {
 		this.id = id;
 		this.lastValue = lastValue;
 	}
@@ -14,7 +14,7 @@ public class StockT {
 		return lastValue;
 	}
 
-	public Object getId() {
+	public String getId() {
 		return id;
 	}
 

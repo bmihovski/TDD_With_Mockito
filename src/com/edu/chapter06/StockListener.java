@@ -14,35 +14,6 @@ public class StockListener {
 	}
 	
 	public StockListener(StockBroker broker) {
-		super();
 		this.broker = broker;
 	}
-}
-
-class Stock{
-	private String id;
-	private Double lastValue;
-	public Stock(String id, Double lastValue) {
-		super();
-		this.id = id;
-		this.lastValue = lastValue;
-	}
-	public String getId() {
-		return id;
-	}
-	public Double boughtAt() {
-		return lastValue;
-	}
-	
-	public void changePrice(Double newPrice){
-		this.lastValue = newPrice;
-	}
-	
-}
-
-
-interface StockBroker{
-	void buy(Stock stock, int quantity);
-	void sell(Stock stock, int quantity);
-	double getQoute(Stock stock);
 }

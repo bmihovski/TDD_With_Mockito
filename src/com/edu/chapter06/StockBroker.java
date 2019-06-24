@@ -1,8 +1,8 @@
 package com.edu.chapter06;
 
-interface StockBrockerT {
+interface StockBroker {
 
-	double getQuote(Stock stock);
+	double getQoute(Stock stock);
 
 	void sell(Stock stock, int quantity);
 
