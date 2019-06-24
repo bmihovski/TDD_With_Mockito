@@ -2,7 +2,7 @@ package com.edu.chapter06;
 
 interface StockBroker {
 
-	double getQoute(Stock stock);
+	double getQuote(Stock stock);
 
 	void sell(Stock stock, int quantity);
 

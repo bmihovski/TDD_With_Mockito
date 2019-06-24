@@ -4,7 +4,7 @@ public class StockListener {
 	private final StockBroker broker;
 	
 	public void takeAction(Stock stock){
-		double currentPrice = broker.getQoute(stock);
+		double currentPrice = broker.getQuote(stock);
 		if(currentPrice <= stock.boughtAt()){
 			broker.buy(stock, 100);
 		}else{
