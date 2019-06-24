@@ -1,8 +1,11 @@
 package com.edu.chapter06;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,5 +58,29 @@ public class BiggestBazarRetailTest {
 		verify(inventory, never()).update(isA(Item.class), anyDouble());
 		verify(pas, never()).announce(isA(Offer.class));
 		
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void inventory_access_raises_Error() {
+		when(inventory.getItemsExpireInAMonth()).thenThrow(new RuntimeException("Database Access fail"));
+		
+		bazar.issueDiscountForItemsExpireIn30Days(.30);
+		fail("Code should't reach here");
+	}
+	
+	//doThrow(exception).when(mock).voidMethod(arguments);
+	@Test(expected = RuntimeException.class)
+	public void voidMethod_to_throw_exception() {
+		doThrow(new RuntimeException()).when(pas).announce(isA(Offer.class));
+		pas.announce(new Offer(null, 0));
+		fail("Code should not reach here");
+	}
+	
+	@Test
+	public void consecutiveCalls() {
+		when(inventory.getItemsExpireInAMonth()).thenReturn(expiredList)
+												.thenReturn(null);
+		assertEquals(expiredList, inventory.getItemsExpireInAMonth());
+		assertEquals(null, inventory.getItemsExpireInAMonth());
 	}
 }
