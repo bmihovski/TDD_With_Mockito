@@ -1,6 +1,6 @@
 package com.edu.chapter06;
 
-interface StockBrocker {
+interface StockBrockerT {
 
 	double getQuote(Stock stock);
 

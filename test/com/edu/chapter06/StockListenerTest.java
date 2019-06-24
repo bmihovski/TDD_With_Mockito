@@ -15,26 +15,26 @@ public class StockListenerTest {
 	StockListener listener;
 	
 	@Mock
-	StockBrocker brocker;
+	StockBroker stockBroker;
 	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		listener = new StockListener(brocker);
+		listener = new StockListener(stockBroker);
 	}
 	
 	@Test
 	public void sells_BlueChips_Stock() throws Exception {
-		when(brocker.getQuote(argThat(new BlueChipStockMatcher()))).thenReturn(1000.00);
+		when(stockBroker.getQoute(argThat(new BlueChipStockMatcher()))).thenReturn(1000.00);
 		listener.takeAction(new Stock("SBI", 500.00));
-		verify(brocker).sell(isA(Stock.class), anyInt());
+		verify(stockBroker).sell(isA(Stock.class), anyInt());
 	}
 	
 	@Test
 	public void buy_low_Stocks() {
-		when(brocker.getQuote(argThat(new BlueChipStockMatcher()))).thenReturn(1000.00);
+		when(stockBroker.getQoute(argThat(new BlueChipStockMatcher()))).thenReturn(1000.00);
 		listener.takeAction(new Stock("XYZ", 500.00));
-		verify(brocker).buy(isA(Stock.class), anyInt());
+		verify(stockBroker).buy(isA(Stock.class), anyInt());
 	}
 
 }
