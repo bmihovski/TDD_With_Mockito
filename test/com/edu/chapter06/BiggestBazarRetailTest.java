@@ -2,22 +2,17 @@ package com.edu.chapter06;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.verification.Times;
 
 public class BiggestBazarRetailTest {
 	@Mock
