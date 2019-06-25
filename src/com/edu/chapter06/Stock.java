@@ -18,4 +18,8 @@ public class Stock {
 		return id;
 	}
 
+	public void changePrice(double newPrice) {
+		this.lastValue = newPrice;
+	}
+
 }
