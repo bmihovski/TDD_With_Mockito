@@ -37,4 +37,12 @@ public class StockListenerTest {
 		verify(stockBroker).buy(isA(Stock.class), anyInt());
 	}
 
+	@Test
+	public void sells_BlueChip_Stocks_WITH_answer_object() throws Exception {
+		when(stockBroker.getQuote(argThat(new BlueChipStockMatcher())))
+			.then(new BlueChipShareRises());
+		listener.takeAction(new Stock("SBI", 1000.00));
+		verify(stockBroker).sell(isA(Stock.class), anyInt());
+	}
+	
 }
