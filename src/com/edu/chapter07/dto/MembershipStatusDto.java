@@ -1,6 +1,6 @@
 package com.edu.chapter07.dto;
 
-public class MembershipStatusDTO {
+public class MembershipStatusDto {
 	double deductive;
 
 	public double getDeductive() {

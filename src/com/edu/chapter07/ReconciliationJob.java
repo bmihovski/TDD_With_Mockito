@@ -1,6 +1,7 @@
 package com.edu.chapter07;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.edu.chapter07.dao.FinancialTransactionDAO;
 import com.edu.chapter07.dao.MembershipDAO;
@@ -19,6 +20,11 @@ public class ReconciliationJob {
 
 	public int reconcile() {
 		List<TransactionDto> unSettledTxs = financialTxDAO.retrieveUnSettledTransactions();
+		
+		unSettledTxs.stream()
+					.map(m -> membershipDAO.getStatusFor(m.getTargetId()))
+					.collect(Collectors.toList());
+		
 		return unSettledTxs.size();
 	}
 
