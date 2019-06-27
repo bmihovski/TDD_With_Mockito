@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import come.edu.chapter04.outside.in.TaxCalculator;
@@ -18,39 +17,42 @@ import come.edu.chapter04.outside.in.TaxbleIncomeCalculator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaxConsultantTest {
-	
+
 	@Mock
-	TaxbleIncomeCalculator taxbleIncomeCalculator;
+	TaxbleIncomeCalculator taxableIncomeCalculator;
 	@Mock
 	TaxCalculator taxCalculator;
 
 	TaxConsultant consultant;
-	
-	@Before
-	public void setup() {
-		MockitoAnnotations.initMocks(this);
-		consultant = new TaxConsultant(taxbleIncomeCalculator, taxCalculator);
 
+	@Before
+	public void setUp() {
+		consultant = new TaxConsultant(taxableIncomeCalculator, taxCalculator);
 	}
-	
+
 	@Test
 	public void when_deductable_present_then_taxable_income_is_less_than_the_total_income() {
-		
-		double totalIncome = 1_200_000;
-		double homeLoanInterest = 150_000;
-		double homeLoanPrincipal = 20_000;
-		double providentFundSavings = 50_000;
-		double lifeInsurancePremium = 30_000;
-		
-		consultant.consult(totalIncome, homeLoanInterest, homeLoanPrincipal,
-				providentFundSavings, lifeInsurancePremium);
-		
-		verify(taxbleIncomeCalculator, only())
-			.calculate(eq(totalIncome), eq(homeLoanInterest),
-						eq(homeLoanPrincipal), eq(providentFundSavings),
-						eq(lifeInsurancePremium));
-		
+		double totalIncome = 1200000;
+		double homeLoanInterest = 150000;
+		double homeLoanPrincipal = 20000;
+		double providentFundSavings = 50000;
+		double lifeInsurancePremium = 30000;
+
+		consultant.consult(totalIncome, homeLoanInterest, homeLoanPrincipal, providentFundSavings,
+				lifeInsurancePremium);
+		verify(taxableIncomeCalculator, only()).calculate(eq(totalIncome), eq(homeLoanInterest), eq(homeLoanPrincipal),
+				eq(providentFundSavings), eq(lifeInsurancePremium));
 		verify(taxCalculator, only()).calculate(anyDouble());
-		
+	}
+
+	@Test
+	public void when_when_total_income_is_taxable_then_taxable_income_is_total_income() {
+
+	}
+
+	@Test
+	public void when_investment_is_250000_then_taxable_income_is_reduced_by_twentyfive_hundred_thousand()
+			throws Exception {
+
 	}
 }
