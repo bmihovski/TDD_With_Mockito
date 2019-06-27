@@ -1,7 +1,9 @@
 package com.edu.chapter07;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.edu.chapter07.dao.FinancialTransactionDAO;
 import com.edu.chapter07.dao.MembershipDAO;
 import com.edu.chapter07.dto.MembershipStatusDto;
+import com.edu.chapter07.dto.PaymentAdviceDto;
 import com.edu.chapter07.dto.TransactionDto;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,10 +33,14 @@ public class ReconciliationJobTest {
 	FinancialTransactionDAO financialTransactionDAO;
 	@Mock
 	MembershipDAO membershipDAO;
+	@Mock
+	PayPalFacade payPalFacade;
+	@Mock
+	TransactionDto transactionDto;
 	
 	@Before
 	public void setUp() {
-		job = new ReconciliationJob(financialTransactionDAO, membershipDAO);
+		job = new ReconciliationJob(financialTransactionDAO, membershipDAO, payPalFacade, transactionDto);
 		MembershipStatusDto basicMembership = new MembershipStatusDto();
 		
 		basicMembership.setDeductive(.30);
@@ -91,6 +98,55 @@ public class ReconciliationJobTest {
 		assertEquals(johnsDeveloperId, passedValues.get(0));
 		assertEquals(bobsDeveloperId, passedValues.get(1));
 		
+	}
+	
+	@Test
+	public void when_transaction_exists_Then_sends_Payble_TO_PayPal() throws Exception {
+		
+		final String davidsDeveloperId = "dev999";
+		final String davidsPayPalId = "david@paypal.com";
+		final double davidsSuperMarioGamePrice = 100.00;
+		
+		List<TransactionDto> davidsTransactionList = Arrays.asList(createTxDto(
+				davidsDeveloperId, davidsPayPalId, davidsSuperMarioGamePrice));
+		
+		when(financialTransactionDAO.retrieveUnSettledTransactions()).thenReturn(davidsTransactionList);
+		
+		assertEquals(1, job.reconcile());
+		
+		verify(payPalFacade).sendAdvice(isA(PaymentAdviceDto.class));
+		
+	}
+	
+	@Test
+	public void calculates_payable() throws Exception {
+		final String ronaldosDeveloperId = "ronaldo007";
+		final String ronaldosPayPalId = "ronaldo@real.madrid.com";
+		final double ronaldosSockerFee = 100.00;
+		
+		List<TransactionDto> ronaldosTransactionList = Arrays.asList(createTxDto(ronaldosDeveloperId,
+				ronaldosPayPalId, ronaldosSockerFee));
+		
+		when(financialTransactionDAO.retrieveUnSettledTransactions())
+			.thenReturn(ronaldosTransactionList);
+		
+		assertEquals(1, job.reconcile());
+		
+		ArgumentCaptor<PaymentAdviceDto> calculateAdvice = 
+				ArgumentCaptor.forClass(PaymentAdviceDto.class);
+		verify(payPalFacade).sendAdvice(calculateAdvice.capture());
+		
+		assertTrue(70.00 == calculateAdvice.getValue().getAmmount());
+	}
+
+	private TransactionDto createTxDto(String devId, String payPalId, double gamePrice) {
+		
+		TransactionDto transactionDto = new TransactionDto();
+		transactionDto.setTargetId(devId);
+		transactionDto.setTargetPayPalId(payPalId);
+		transactionDto.setAmmount(gamePrice);
+		
+		return transactionDto;
 	}
 	
 }
