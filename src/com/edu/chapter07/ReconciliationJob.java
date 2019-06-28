@@ -33,18 +33,37 @@ public class ReconciliationJob {
 		List<TransactionDto> unSettledTxs = financialTxDAO.retrieveUnSettledTransactions();
 		
 //		for (TransactionDto transactionDto : unSettledTxs) {
-//			double payableAmount = transactionDto.getAmmount() ï¿½
+//			double payableAmount = transactionDto.getAmount() –
 //			transactionDto.getAmount() * membership.getDeductable();
 //			payPalFacade.sendAdvice(new PaymentAdviceDto(payableAmount,
 //			transactionDto.getTargetPayPalId(), "Post payment for developer "+
 //			transactionDto.getTargetId()));
 //			}
 		
-		Consumer<PaymentAdviceDto> advice = m -> payPalFacade.sendAdvice(m);
+//		 MembershipStatusDto membership = membershipDAO
+//					.getStatusFor(transactionDto.getTargetId());
 		
-		unSettledTxs.stream()
-			.forEach(m -> advice.accept(new PaymentAdviceDto(0.00, m.getTargetId(),
-					"Post payment for developer "+ m.getTargetPayPalId())));
+//		Consumer<PaymentAdviceDto> advice = m -> payPalFacade.sendAdvice(m);
+//		
+//		final List<MembershipStatusDto> membership = unSettledTxs.stream()
+//											   .map(m -> membershipDAO.getStatusFor(m.getTargetId()))
+//											   .collect(Collectors.toList());
+//		
+//	    Function<TransactionDto, Double> payableAmount = m -> transactionDto.getAmmount() -
+//	    			transactionDto.getAmmount() * membershipDAO.getStatusFor(transactionDto.getTargetId()).getDeductive();
+//		
+//		unSettledTxs.stream()
+//			.forEach(m -> advice.accept(new PaymentAdviceDto(payableAmount.apply(m), m.getTargetId(),
+//					"Post payment for developer "+ m.getTargetPayPalId())));
+		
+		for (TransactionDto transactionDto : unSettledTxs) {
+			MembershipStatusDto membership = membershipDAO
+					.getStatusFor(transactionDto.getTargetId());
+			double payableAmount = transactionDto.getAmmount() - transactionDto.getAmmount() * membership.getDeductive();
+			payPalFacade.sendAdvice(new PaymentAdviceDto(payableAmount,
+			transactionDto.getTargetPayPalId(), "Post payment for developer "+
+			transactionDto.getTargetId()));
+			}
 		
 //		payPalFacade.sendAdvice(new PaymentAdviceDto(0.00,
 //				transactionDto.getTargetId(), transactionDto.getTargetPayPalId()));

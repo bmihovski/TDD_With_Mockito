@@ -3,6 +3,7 @@ package com.edu.chapter07;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -118,7 +119,7 @@ public class ReconciliationJobTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void calculates_payable() throws Exception {
 		final String ronaldosDeveloperId = "ronaldo007";
 		final String ronaldosPayPalId = "ronaldo@real.madrid.com";
@@ -139,6 +140,39 @@ public class ReconciliationJobTest {
 		assertTrue(70.00 == calculateAdvice.getValue().getAmmount());
 	}
 
+	@Test
+	public void calculates_payable_with_multiple_Transaction() throws Exception {
+		
+		String johnsDeveloperId = "john001";
+		String johnsPayPalId = "john@gmail.com";
+		double johnsGameFee = 200;
+		
+		String davesDeveloperId = "dave888";
+		String davesPayPalId = "IamDave009@rf.ce";
+		double davesGameFee = 150;
+		
+		List<TransactionDto> transactionList = Arrays.asList(createTxDto(johnsDeveloperId, johnsPayPalId, johnsGameFee),
+				createTxDto(davesDeveloperId, davesPayPalId, davesGameFee)); 
+		
+		when(financialTransactionDAO.retrieveUnSettledTransactions())
+			.thenReturn(transactionList);
+		
+		when(membershipDAO.getStatusFor(eq(johnsDeveloperId))).thenReturn(membership(.15));
+		when(membershipDAO.getStatusFor(eq(johnsDeveloperId))).thenReturn(membership(.10));
+		
+		assertEquals(2, job.reconcile());
+		
+		ArgumentCaptor<PaymentAdviceDto> calcultateAdvice = 
+				ArgumentCaptor.forClass(PaymentAdviceDto.class);
+		
+		verify(payPalFacade, new Times(2)).sendAdvice(calcultateAdvice.capture());
+		
+		assertTrue(120.00 == calcultateAdvice.getAllValues().get(0).getAmmount());
+		
+		assertTrue(135.00 == calcultateAdvice.getAllValues().get(1).getAmmount());
+		
+	}
+	
 	private TransactionDto createTxDto(String devId, String payPalId, double gamePrice) {
 		
 		TransactionDto transactionDto = new TransactionDto();
