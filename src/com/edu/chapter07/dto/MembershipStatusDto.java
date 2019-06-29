@@ -1,14 +1,14 @@
 package com.edu.chapter07.dto;
 
 public class MembershipStatusDto {
-	double deductive;
+	double deductable;
 
-	public double getDeductive() {
-		return deductive;
+	public double getDeductable() {
+		return deductable;
 	}
 
-	public void setDeductive(double deductive) {
-		this.deductive = deductive;
+	public void setDeductable(double deductable) {
+		this.deductable = deductable;
 	}
 	
 	

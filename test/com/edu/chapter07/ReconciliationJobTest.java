@@ -44,7 +44,7 @@ public class ReconciliationJobTest {
 		job = new ReconciliationJob(financialTransactionDAO, membershipDAO, payPalFacade, transactionDto);
 		MembershipStatusDto basicMembership = new MembershipStatusDto();
 		
-		basicMembership.setDeductive(.30);
+		basicMembership.setDeductable(.30);
 		when(membershipDAO.getStatusFor(anyString()))
 						  .thenReturn(basicMembership);
 	}
@@ -157,8 +157,8 @@ public class ReconciliationJobTest {
 		when(financialTransactionDAO.retrieveUnSettledTransactions())
 			.thenReturn(transactionList);
 		
-		when(membershipDAO.getStatusFor(eq(johnsDeveloperId))).thenReturn(membership(.15));
-		when(membershipDAO.getStatusFor(eq(johnsDeveloperId))).thenReturn(membership(.10));
+		when(membershipDAO.getStatusFor(eq(johnsDeveloperId))).thenReturn(memberShip(.15));
+		when(membershipDAO.getStatusFor(eq(davesDeveloperId))).thenReturn(memberShip(.10));
 		
 		assertEquals(2, job.reconcile());
 		
@@ -166,10 +166,31 @@ public class ReconciliationJobTest {
 				ArgumentCaptor.forClass(PaymentAdviceDto.class);
 		
 		verify(payPalFacade, new Times(2)).sendAdvice(calcultateAdvice.capture());
-		
-		assertTrue(120.00 == calcultateAdvice.getAllValues().get(0).getAmmount());
+			
+		assertTrue(170.00 == calcultateAdvice.getAllValues().get(0).getAmmount());
 		
 		assertTrue(135.00 == calcultateAdvice.getAllValues().get(1).getAmmount());
+		
+	}
+	
+	@Test
+	public void calculates_payable_with_multiple_Transaction_For_same_developer() throws Exception {
+		final String janetsDeveloperId = "janet232";
+		final String janetsPayPalId = "janet@dwede.com";
+		final double fishPondGameFee = 200;
+		final double ticTacToeGameFee = 100;
+		final List<TransactionDto> janetsGameFees = Arrays.asList(createTxDto(janetsDeveloperId, janetsPayPalId, fishPondGameFee),
+				createTxDto(janetsDeveloperId, janetsPayPalId, ticTacToeGameFee));
+		
+		when(financialTransactionDAO.retrieveUnSettledTransactions()).thenReturn(janetsGameFees);
+		
+		assertEquals(2, job.reconcile());
+		
+		ArgumentCaptor<PaymentAdviceDto> calculatedAdvice = ArgumentCaptor.forClass(PaymentAdviceDto.class);
+		
+		verify(payPalFacade, new Times(1)).sendAdvice(calculatedAdvice.capture());
+		
+		assertTrue(210 == calculatedAdvice.getValue().getAmmount());
 		
 	}
 	
@@ -178,9 +199,16 @@ public class ReconciliationJobTest {
 		TransactionDto transactionDto = new TransactionDto();
 		transactionDto.setTargetId(devId);
 		transactionDto.setTargetPayPalId(payPalId);
-		transactionDto.setAmmount(gamePrice);
+		transactionDto.setAmount(gamePrice);
 		
 		return transactionDto;
+	}
+	
+	private MembershipStatusDto memberShip(double fee) {
+		MembershipStatusDto membershipStatusDto = new MembershipStatusDto();
+		membershipStatusDto.setDeductable(fee);
+		
+		return membershipStatusDto;
 	}
 	
 }

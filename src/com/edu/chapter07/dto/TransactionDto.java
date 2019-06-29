@@ -4,22 +4,22 @@ public class TransactionDto {
 
 	private String targetId;
 	private String targetPayPalId;
-	private double ammount;
+	private double amount;
 	
 	public String getTargetPayPalId() {
 		return targetPayPalId;
 	}
 
-	public double getAmmount() {
-		return ammount;
+	public double getAmount() {
+		return amount;
 	}
 
 	public void setTargetPayPalId(String targetPayPalId) {
 		this.targetPayPalId = targetPayPalId;
 	}
 
-	public void setAmmount(double ammount) {
-		this.ammount = ammount;
+	public void setAmount(double ammount) {
+		this.amount = ammount;
 	}
 	
 	public String getTargetId() {
