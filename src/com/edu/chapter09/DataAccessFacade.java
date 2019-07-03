@@ -1,5 +1,8 @@
 package com.edu.chapter09;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataAccessFacade {
 
 	public static void register(String url, String userName, String password) {
@@ -17,6 +20,15 @@ public class DataAccessFacade {
 		}
 		
 		return null;
+	}
+
+	public static List<Encounter> fecthEncountersFor(Long objectId) {
+		return new ArrayList<Encounter>();
+	}
+
+	public static List<Encounter> findAllUnprocessedEncounters() {
+		// TODO Auto-generated method stub
+		return new ArrayList<Encounter>();
 	}
 
 }
