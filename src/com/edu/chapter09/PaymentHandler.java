@@ -7,8 +7,17 @@ import java.util.Map;
 
 public class PaymentHandler extends BaseObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public PaymentHandler(Long objectId) {
 		super(objectId);
+	}
+	
+	public PaymentHandler(Long objectId, boolean isInit) {
+		super(objectId, isInit);
 	}
 	
 	public Map<Patient, Double> calculateDue() {

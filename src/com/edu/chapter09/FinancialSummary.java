@@ -14,6 +14,30 @@ public class FinancialSummary extends BaseObject {
 	private double amountDue;
 	private Date lastPaymentDate;
 
+	public Encounter getEncounter() {
+		return encounter;
+	}
+
+	public double getAmountDue() {
+		return amountDue;
+	}
+
+	public Date getLastPaymentDate() {
+		return lastPaymentDate;
+	}
+
+	public void setEncounter(Encounter encounter) {
+		this.encounter = encounter;
+	}
+
+	public void setAmountDue(double amountDue) {
+		this.amountDue = amountDue;
+	}
+
+	public void setLastPaymentDate(Date lastPaymentDate) {
+		this.lastPaymentDate = lastPaymentDate;
+	}
+
 	public double getAmmountDue() {
 		return amountDue;
 	}

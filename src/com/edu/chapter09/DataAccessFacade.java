@@ -31,4 +31,9 @@ public class DataAccessFacade {
 		return new ArrayList<Encounter>();
 	}
 
+	public static void addChargeFor(Encounter encounter, EncounterCharges aCharge) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
